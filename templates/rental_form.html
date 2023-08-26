@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rental Agreement Form</title>
+  </head>
+  <body>
+    <h2>Rental Agreement</h2>
+    <form action="/finalize_contract" method="post">
+      <label>Landlord Name:</label><br />
+      <input type="text" name="landlord_name" required /><br /><br />
+
+      <label>Tenant Name:</label><br />
+      <input type="text" name="tenant_name" required /><br /><br />
+
+      <label>Property Address:</label><br />
+      <input type="text" name="property_address" required /><br /><br />
+
+      <label>Rent Amount:</label><br />
+      <input type="text" name="rent_amount" required /><br /><br />
+
+      <label>Duration (in months):</label><br />
+      <input type="number" name="duration" required /><br /><br />
+
+      <input type="hidden" name="contract_type" value="rental" />
+
+      <label for="custom_clause">Add a custom clause (optional):</label><br />
+      <textarea name="custom_clause" rows="4" cols="50"></textarea><br /><br />
+
+      <input type="submit" value="Generate Contract" />
+    </form>
+  </body>
+</html>

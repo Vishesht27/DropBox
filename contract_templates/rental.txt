@@ -1,0 +1,11 @@
+RENTAL AGREEMENT
+
+This Rental Agreement is made between [LANDLORD_NAME] ("Landlord") and [TENANT_NAME] ("Tenant").
+
+Property Address: [PROPERTY_ADDRESS]
+
+Rent Amount: [RENT_AMOUNT] per month
+
+Duration: [DURATION] months
+
+Signed on: [DATE]

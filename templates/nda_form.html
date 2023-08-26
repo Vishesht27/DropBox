@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NDA Form</title>
+  </head>
+  <body>
+    <h2>Non-Disclosure Agreement</h2>
+    <form action="/finalize_contract" method="post">
+      <label>Party One Name:</label><br />
+      <input type="text" name="party_one_name" required /><br /><br />
+
+      <label>Party Two Name:</label><br />
+      <input type="text" name="party_two_name" required /><br /><br />
+
+      <label>Duration (in months):</label><br />
+      <input type="number" name="duration" required /><br /><br />
+
+      <input type="hidden" name="contract_type" value="nda" />
+
+      <label for="custom_clause">Add a custom clause (optional):</label><br />
+      <textarea name="custom_clause" rows="4" cols="50"></textarea><br /><br />
+
+      <input type="submit" value="Generate Contract" />
+    </form>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+EMPLOYMENT CONTRACT
+
+This Employment Contract is made between [EMPLOYER_NAME] ("Employer") and [EMPLOYEE_NAME] ("Employee").
+
+Position: [POSITION]
+
+Salary: [SALARY] per annum
+
+Duration: [DURATION] months
+
+Signed on: [DATE]

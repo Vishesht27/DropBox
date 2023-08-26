@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employment Contract Generation</title>
+</head>
+<body>
+
+<h2>Generate Employment Contract</h2>
+<form action="/finalize_contract" method="post">
+    <input type="hidden" name="contract_type" value="employment">
+    
+    <label for="employer_name">Employer Name:</label><br>
+    <input type="text" id="employer_name" name="employer_name"><br><br>
+
+    <label for="employee_name">Employee Name:</label><br>
+    <input type="text" id="employee_name" name="employee_name"><br><br>
+    
+    <label for="position">Position:</label><br>
+    <input type="text" id="position" name="position"><br><br>
+
+    <label for="salary">Salary:</label><br>
+    <input type="text" id="salary" name="salary"><br><br>
+
+    <label for="duration">Duration (e.g., "12 months"):</label><br>
+    <input type="text" id="duration" name="duration"><br><br>
+
+    <label for="custom_clause">Add a custom clause (optional):</label><br>
+    <textarea name="custom_clause" rows="4" cols="50"></textarea><br><br>
+
+    <input type="submit" value="Generate Contract">
+</form>
+
+</body>
+</html>
