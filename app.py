@@ -2,8 +2,14 @@ from flask import Flask, render_template, request
 from datetime import date
 import requests
 from textblob import TextBlob
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
+
+api_key = os.environ.get("DROPBOX_API_KEY")
 
 def convert_to_pdf(content):
     # Placeholder for actual PDF conversion
@@ -38,7 +44,7 @@ def send_to_dropbox_sign(contract_content, api_key):
     # Your implementation of sending contract to Dropbox using their API
     return "Contract sent to Dropbox successfully!"  # Placeholder response
 
-def analyze_sentiment(clause):
+def suggest_clause_improvement(clause, sentiment):
 
     def suggest_clause_improvement(clause, sentiment):
         # For the sake of simplicity, we'll use a few predefined suggestions.
@@ -67,7 +73,7 @@ def analyze_sentiment(clause):
         # Return a suggestion from the appropriate category
         return suggestions[sentiment_category][0] if suggestions[sentiment_category] else None
 
-        analysis = TextBlob(clause)
+        
         if analysis.sentiment.polarity > 0:
             return "Positive tone detected in the custom clause."
         elif analysis.sentiment.polarity == 0:
@@ -88,8 +94,17 @@ def generate_contract():
         return render_template('nda_form.html')
     elif contract_type == "employment":
         return render_template('employment_form.html')
+
+def analyze_sentiment(clause):
+    analysis = TextBlob(clause)
+    if analysis.sentiment.polarity > 0:
+        return "Positive tone detected in the custom clause."
+    elif analysis.sentiment.polarity == 0:
+        return "Neutral tone detected in the custom clause."
     else:
-        return "Unknown contract type"
+        return "Negative tone detected in the custom clause."
+
+
 
 @app.route('/finalize_contract', methods=['POST'])
 def finalize_contract():
@@ -140,9 +155,9 @@ def finalize_contract():
             contract = contract.replace('[DATE]', str(date.today()))
 
 
-    suggestion = suggest_clause_improvement(custom_clause, analysis.sentiment.polarity)
-    if suggestion:
-        contract += f" Suggestion: {suggestion}"
+    feedback = analyze_sentiment(custom_clause)
+    
+        
 
     contract += f"\n\nCustom Clause: {custom_clause}\nFeedback: {sentiment_feedback}"
     return f"""
@@ -156,7 +171,6 @@ def finalize_contract():
 @app.route('/send_to_dropbox', methods=['POST'])
 def send_to_dropbox():
     contract_content = request.form['contract_content']
-    api_key = "YOUR_DROPBOX_SIGN_API_KEY"  # replace this with your actual API key
     message = send_to_dropbox_sign(contract_content, api_key)
     return message
 
