@@ -4,6 +4,7 @@ import requests
 from textblob import TextBlob
 import os
 from dotenv import load_dotenv
+import base64
 
 load_dotenv()
 
@@ -16,33 +17,32 @@ def convert_to_pdf(content):
     return content
 
 def send_to_dropbox_sign(contract_content, api_key):
-
-    # Set up the API endpoint and headers
-    url = "https://api.dropboxsign.com/send_contract"  # This URL is a placeholder, replace with the actual endpoint
+    url = "https://api.hellosign.com/v3/signature_request/send"
     headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json"
+        "Authorization": f"Basic {base64.b64encode(f'{api_key}:'.encode()).decode()}"
     }
-    
-    # Format the data to be sent to Dropbox Sign
-    data = {
-        "contract_content": contract_content,
-        # Add any other required fields here based on the Dropbox Sign API documentation
-    }
-    
-    # Make the API call
-    response = requests.post(url, headers=headers, json=data)
-    
-    # Handle the response
-    if response.status_code == 200:
-        # Handle success case (e.g., extract any necessary information from the response)
-        return "Contract sent to Dropbox Sign successfully!"
-    else:
-        # Handle error cases
-        return f"Failed to send contract to Dropbox Sign. Error: {response.text}"
 
-    # Your implementation of sending contract to Dropbox using their API
-    return "Contract sent to Dropbox successfully!"  # Placeholder response
+    # Prepare data for multi-part form upload
+    data = {
+        'test_mode': '1',
+        'title': 'Test Contract',
+        'subject': 'Please sign this contract',
+        'message': 'This is a test contract. Please sign it.',
+        'signers[0][name]': 'Vishesh Tripathi',
+        'signers[0][email_address]': 'vishesht27@gmail.com',
+    }
+
+    # Attach the file
+    files = {
+        'file[0]': ('contract.txt', contract_content)  # Assuming contract_content is plain text. Adjust as needed.
+    }
+
+    response = requests.post(url, headers=headers, data=data, files=files)
+
+    if response.status_code != 200:
+        raise Exception(f"Failed to send contract to Dropbox Sign. Error: {response.json()}")
+    
+    return "Contract sent successfully to Dropbox Sign!"
 
 def suggest_clause_improvement(clause, sentiment):
 
