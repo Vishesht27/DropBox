@@ -1,34 +1,133 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Employment Contract Generation</title>
-</head>
-<body>
+  <head>
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <style>
+      .custom-card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease-in-out;
+      }
 
-<h2>Generate Employment Contract</h2>
-<form action="/finalize_contract" method="post">
-    <input type="hidden" name="contract_type" value="employment">
-    
-    <label for="employer_name">Employer Name:</label><br>
-    <input type="text" id="employer_name" name="employer_name"><br><br>
+      .custom-card:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
 
-    <label for="employee_name">Employee Name:</label><br>
-    <input type="text" id="employee_name" name="employee_name"><br><br>
-    
-    <label for="position">Position:</label><br>
-    <input type="text" id="position" name="position"><br><br>
+      .custom-btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+      }
 
-    <label for="salary">Salary:</label><br>
-    <input type="text" id="salary" name="salary"><br><br>
+      .custom-btn:hover {
+        background-color: #0056b3;
+      }
 
-    <label for="duration">Duration (e.g., "12 months"):</label><br>
-    <input type="text" id="duration" name="duration"><br><br>
+      .back-btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+        margin-right: 10px;
+      }
 
-    <label for="custom_clause">Add a custom clause (optional):</label><br>
-    <textarea name="custom_clause" rows="4" cols="50"></textarea><br><br>
+      .back-btn:hover {
+        background-color: #0056b3;
+      }
+    </style>
+    <title>Employment Contract Form</title>
+  </head>
+  <body class="bg-light">
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="custom-card p-4 rounded">
+            <h2 class="display-4 mb-4 text-center">Employment Contract Form</h2>
+            <form action="/finalize_contract" method="post">
+              <input type="hidden" name="contract_type" value="employment" />
 
-    <input type="submit" value="Generate Contract">
-</form>
+              <div class="form-group">
+                <label for="employer_name">Employer Name:</label>
+                <input
+                  type="text"
+                  name="employer_name"
+                  class="form-control"
+                  required
+                />
+              </div>
 
-</body>
+              <div class="form-group">
+                <label for="employee_name">Employee Name:</label>
+                <input
+                  type="text"
+                  name="employee_name"
+                  class="form-control"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="employer_name">Position</label>
+                <input
+                  type="text"
+                  name="Position"
+                  class="form-control"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="salary">Salary:</label>
+                <input
+                  type="text"
+                  name="salary"
+                  class="form-control"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="Duration">Duration (in months):</label>
+                <input
+                  type="text"
+                  name="duration"
+                  class="form-control"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="custom_clause"
+                  >Add a custom clause (optional):</label
+                >
+                <textarea
+                  name="custom_clause"
+                  rows="4"
+                  class="form-control"
+                ></textarea>
+              </div>
+              <div class="form-group text-center">
+                <a href="/select_contract" class="back-btn">Back</a>
+                <input
+                  type="submit"
+                  value="Generate Contract"
+                  class="custom-btn"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

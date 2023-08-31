@@ -1,26 +1,119 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <style>
+      /* Same styles as before for consistency */
+      .custom-card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease-in-out;
+      }
+
+      .custom-card:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .custom-btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+      }
+
+      .custom-btn:hover {
+        background-color: #0056b3;
+      }
+
+      .back-btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+        margin-right: 10px;
+      }
+
+      .back-btn:hover {
+        background-color: #0056b3;
+      }
+    </style>
     <title>NDA Form</title>
   </head>
-  <body>
-    <h2>Non-Disclosure Agreement</h2>
-    <form action="/finalize_contract" method="post">
-      <label>Party One Name:</label><br />
-      <input type="text" name="party_one_name" required /><br /><br />
+  <body class="bg-light">
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="custom-card p-4 rounded">
+            <h2 class="display-4 mb-4 text-center">
+              Non-Disclosure Agreement (NDA) Form
+            </h2>
+            <form action="/finalize_contract" method="post">
+              <div class="form-group">
+                <label for="disclosing_party">Disclosing Party:</label>
+                <input
+                  type="text"
+                  name="disclosing_party"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="receiving_party">Receiving Party:</label>
+                <input
+                  type="text"
+                  name="receiving_party"
+                  class="form-control"
+                  required
+                />
+              </div>
 
-      <label>Party Two Name:</label><br />
-      <input type="text" name="party_two_name" required /><br /><br />
+              <div class="form-group">
+                <label for="Duration">Duration (in months):</label>
+                <input
+                  type="text"
+                  name="duration"
+                  class="form-control"
+                  required
+                />
+              </div>
+<!-- 
+              <label>Duration (in months):</label><br />
+              <input type="number" name="duration" required /><br /><br /> -->
 
-      <label>Duration (in months):</label><br />
-      <input type="number" name="duration" required /><br /><br />
+              <input type="hidden" name="contract_type" value="nda" />
 
-      <input type="hidden" name="contract_type" value="nda" />
+              <div class="form-group">
+                <label for="custom_clause"
+                  >Add a custom clause (optional):</label
+                >
+                <textarea
+                  name="custom_clause"
+                  rows="4"
+                  class="form-control"
+                ></textarea>
+              </div>
 
-      <label for="custom_clause">Add a custom clause (optional):</label><br />
-      <textarea name="custom_clause" rows="4" cols="50"></textarea><br /><br />
-
-      <input type="submit" value="Generate Contract" />
-    </form>
+              <div class="form-group text-center">
+                <a href="/select_contract" class="back-btn">Back</a>
+                <input
+                  type="submit"
+                  value="Generate Contract"
+                  class="custom-btn"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

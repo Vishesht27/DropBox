@@ -1,18 +1,62 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <style>
+      .custom-card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease-in-out;
+      }
+
+      .custom-card:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .custom-btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+      }
+
+      .custom-btn:hover {
+        background-color: #0056b3;
+      }
+    </style>
     <title>Select Contract</title>
-</head>
-<body>
-    <h2>Select Contract Type</h2>
-    <form action="/generate_contract" method="post">
-        <select name="contract_type">
-            <option value="rental">Rental Agreement</option>
-            <option value="nda">NDA</option>
-            <option value="employment">Employment Contract</option>
-        </select>
-        <br><br>
-        <input type="submit" value="Next">
-    </form>
-</body>
+  </head>
+  <body class="bg-light">
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="custom-card p-4 rounded">
+            <h2 class="display-4 mb-4 text-center">Select a Contract Type</h2>
+            <form action="/generate_contract" method="post" class="text-center">
+              <img
+                alt="Contract Icon"
+                class="mb-4 d-block mx-auto"
+                src="{{ url_for('static', filename='assets/contract.png') }}"
+                width="100"
+              />
+              <div class="form-group">
+                <select name="contract_type" class="form-control">
+                  <option value="rental">Rental Agreement</option>
+                  <option value="nda">NDA</option>
+                  <option value="employment">Employment Contract</option>
+                </select>
+              </div>
+              <input type="submit" value="Next" class="custom-btn" />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

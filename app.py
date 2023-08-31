@@ -28,8 +28,8 @@ def send_to_dropbox_sign(contract_content, api_key):
         'title': 'Test Contract',
         'subject': 'Please sign this contract',
         'message': 'This is a test contract. Please sign it.',
-        'signers[0][name]': 'Vishesh Tripathi',
-        'signers[0][email_address]': 'vishesht27@gmail.com',
+        'signers[0][name]': 'Akarsh Tripathi',
+        'signers[0][email_address]': 'akarshtripathi02@gmail.com',
     }
 
     # Attach the file
@@ -84,6 +84,11 @@ def suggest_clause_improvement(clause, sentiment):
 @app.route('/')
 def index():
     return render_template('select_contract.html')
+
+@app.route('/select_contract', methods=['GET'])
+def select_contract():
+    return render_template('select_contract.html')
+
 
 @app.route('/generate_contract', methods=['POST'])
 def generate_contract():
