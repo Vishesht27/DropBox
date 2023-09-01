@@ -5,5 +5,3 @@ This NDA is made between [PARTY_ONE_NAME] and [PARTY_TWO_NAME].
 Purpose: To protect sensitive information shared between the two parties.
 
 Duration: [DURATION] months
-
-Signed on: [DATE]
