@@ -47,6 +47,11 @@ def send_to_dropbox_sign(contract_content, api_key):
     return "Contract sent successfully to Dropbox Sign!"
 
 
+@app.route("/")
+def index():
+    return render_template("select_contract.html")
+
+
 @app.route("/select_contract", methods=["GET"])
 def select_contract():
     return render_template("select_contract.html")
@@ -121,24 +126,30 @@ def finalize_contract():
             contract = contract.replace("[DURATION]", duration)
             contract = contract.replace("[DATE]", str(date.today()))
 
-
-    contract += f"\n\nCustom Clause: {custom_clause}\nFeedback: {sentiment_feedback}"
-    
-    return f"""
-
-    <pre>{contract}</pre>
-    <form action="/send_to_dropbox" method="post">
+    contract_display = f"""
+    <div class="contract-content">
+        <pre>{contract}</pre>
+    </div>
+    <div class="custom-clause">
+        <strong>Custom Clause:</strong> {custom_clause}
+    </div>
+    <div class="feedback">
+        <strong>Feedback:</strong> {sentiment_feedback}
+    </div>
+    <form action="/send_to_dropbox" method="post" class="submit-form">
         <input type="hidden" name="contract_content" value="{contract}">
-        <input type="submit" value="Send to Dropbox Sign">
+        <input type="submit" value="Send to Dropbox Sign" class="btn btn-primary">
     </form>
     """
+
+    return render_template("output_template.html", content=contract_display)
 
 
 @app.route("/send_to_dropbox", methods=["POST"])
 def send_to_dropbox():
     contract_content = request.form["contract_content"]
     message = send_to_dropbox_sign(contract_content, api_key)
-    return message
+    return render_template('success_notification.html', message=message)
 
 
 if __name__ == "__main__":

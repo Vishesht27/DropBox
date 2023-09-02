@@ -13,11 +13,6 @@ app = Flask(__name__)
 api_key = os.environ.get("DROPBOX_API_KEY")
 
 
-def convert_to_pdf(content):
-    # Placeholder for actual PDF conversion
-    return content
-
-
 def send_to_dropbox_sign(contract_content, api_key):
     url = "https://api.hellosign.com/v3/signature_request/send"
     headers = {
@@ -50,23 +45,6 @@ def send_to_dropbox_sign(contract_content, api_key):
         )
 
     return "Contract sent successfully to Dropbox Sign!"
-
-
-def suggest_clause_improvement(clause):
-    """
-    This function takes in a clause and returns a suggestion based on its sentiment.
-    For the sake of this mockup, we'll just return a hardcoded string.
-    In a real-world scenario, you'd use an NLP model or API here.
-    """
-    # Mock sentiment analysis
-    sentiment = "neutral"  # This can be changed to "positive" or "negative" based on the sentiment of the clause.
-
-    if sentiment == "positive":
-        return "Positive tone detected in the custom clause."
-    elif sentiment == "negative":
-        return "Negative tone detected in the custom clause."
-    else:
-        return "Neutral tone detected in the custom clause."
 
 
 @app.route("/")
@@ -148,10 +126,10 @@ def finalize_contract():
             contract = contract.replace("[DURATION]", duration)
             contract = contract.replace("[DATE]", str(date.today()))
 
-    feedback = analyze_sentiment(custom_clause)
-
     contract += f"\n\nCustom Clause: {custom_clause}\nFeedback: {sentiment_feedback}"
+
     return f"""
+
     <pre>{contract}</pre>
     <form action="/send_to_dropbox" method="post">
         <input type="hidden" name="contract_content" value="{contract}">
