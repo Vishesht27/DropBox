@@ -43,12 +43,47 @@
       .submit-form {
         text-align: center;
       }
+      .recommendations h3 {
+        font-size: 18px;
+        margin-bottom: 15px;
+        margin-top: 30px;
+      }
+
+      .recommendation {
+        margin-bottom: 10px;
+        padding: 5px 10px;
+        font-size: 14px; /* Adjusted font size */
+      }
+
+      .recommendation.critical {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+      }
+
+      .edit-button {
+        width: auto; /* Adjust width */
+        margin: 20px auto; /* Center the button */
+        display: block;
+      }
     </style>
   </head>
 
   <body>
     <div class="container">
-      <div class="contract-container">{{ content|safe }}</div>
+      <div class="contract-container">
+        {{ content|safe }}
+
+        <!-- AI Recommendations Section -->
+        <div class="recommendations">
+          <h3>Recommendations:</h3>
+          <ul>
+            {% for rec in recommendations %}
+            <li>{{ rec }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        <!-- End of AI Recommendations Section -->
+      </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
