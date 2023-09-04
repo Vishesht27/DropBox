@@ -71,7 +71,27 @@
   <body>
     <div class="container">
       <div class="contract-container">
-        {{ content|safe }}
+        <div class="contract-content">
+          <pre>{{ contract }}</pre>
+        </div>
+        <!-- <div class="custom-clause">
+          <strong>Terms and Conditions</strong> {{ custom_clause }}
+        </div> -->
+        <div class="feedback">
+          <strong>Feedback:</strong> {{ sentiment_feedback }}
+        </div>
+        <form action="/send_to_dropbox" method="post" class="submit-form">
+          <input
+            type="hidden"
+            name="full_contract"
+            value="{{ contract }}"
+          />
+          <input
+            type="submit"
+            value="Send to Dropbox Sign"
+            class="btn btn-primary"
+          />
+        </form>
 
         <!-- AI Recommendations Section -->
         <div class="recommendations">

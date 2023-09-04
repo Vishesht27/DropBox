@@ -6,35 +6,33 @@ from dotenv import load_dotenv
 import base64
 from azure.ai.textanalytics import TextAnalyticsClient
 from azure.core.credentials import AzureKeyCredential
+import openai
+
 
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__,static_url_path='/static/assets')
 
 api_key = os.environ.get("DROPBOX_API_KEY")
 AZURE_TEXT_ANALYTICS_ENDPOINT = os.environ.get("AZURE_TEXT_ANALYTICS_ENDPOINT")
 AZURE_TEXT_ANALYTICS_KEY = os.environ.get("AZURE_TEXT_ANALYTICS_KEY")
+openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 
 def extract_key_phrases(text):
-    endpoint = f"{AZURE_TEXT_ANALYTICS_ENDPOINT}text/analytics/v3.1-preview.4/keyPhrases"
+    endpoint = (
+        f"{AZURE_TEXT_ANALYTICS_ENDPOINT}text/analytics/v3.1-preview.4/keyPhrases"
+    )
     headers = {
         "Ocp-Apim-Subscription-Key": AZURE_TEXT_ANALYTICS_KEY,
         "Content-Type": "application/json",
-        "Accept": "application/json"
+        "Accept": "application/json",
     }
-    data = {
-        "documents": [
-            {
-                "id": "1",
-                "text": text
-            }
-        ]
-    }
-    
+    data = {"documents": [{"id": "1", "text": text}]}
+
     response = requests.post(endpoint, headers=headers, json=data)
     if response.status_code == 200:
-        phrases = response.json()['documents'][0]['keyPhrases']
+        phrases = response.json()["documents"][0]["keyPhrases"]
         return phrases
     else:
         print(f"Error: {response.status_code} - {response.text}")
@@ -44,18 +42,29 @@ def extract_key_phrases(text):
 STANDARD_CLAUSES = {
     "employment": ["non-compete", "confidentiality", "benefits", "termination"],
     "rental": ["maintenance", "deposit", "termination", "renewal"],
-    "nda": ["disclosure", "duration", "penalties"]
+    "nda": ["disclosure", "duration", "penalties"],
 }
 
+
 def generate_recommendations(contract_type, key_phrases):
-    missing_clauses = [clause for clause in STANDARD_CLAUSES[contract_type] if clause not in key_phrases]
+    missing_clauses = [
+        clause
+        for clause in STANDARD_CLAUSES[contract_type]
+        if clause not in key_phrases
+    ]
     recommendations = []
     for clause in missing_clauses:
         recommendations.append(f"Consider adding a {clause} clause.")
     return recommendations
 
 
-
+def enhance_sentence_with_gpt(sentence):
+    response = openai.Completion.create(
+        engine="davinci",
+        prompt=f"Given the provided employment conditions, rewrite them in a clear, concise, and legally appropriate manner: {sentence}",
+        max_tokens=150,
+    )
+    return response.choices[0].text.strip().replace("Rephrased:", "").strip()
 
 
 def authenticate_client():
@@ -181,23 +190,23 @@ def finalize_contract():
             contract = contract.replace("[POSITION]", position)
             contract = contract.replace("[SALARY]", salary)
             contract = contract.replace("[DURATION]", duration)
-            contract = contract.replace("[DATE]", str(date.today()))
+            # contract = contract.replace("[DATE]", str(date.today()))
 
-    contract_display = f"""
-    <div class="contract-content">
-        <pre>{contract}</pre>
-    </div>
-    <div class="custom-clause">
-        <strong>Custom Clause:</strong> {custom_clause}
-    </div>
-    <div class="feedback">
-        <strong>Feedback:</strong> {sentiment_feedback}
-    </div>
-    <form action="/send_to_dropbox" method="post" class="submit-form">
-        <input type="hidden" name="contract_content" value="{contract}">
-        <input type="submit" value="Send to Dropbox Sign" class="btn btn-primary">
-    </form>
-    """
+    ai_enhance = request.form.get("ai_enhance")
+    if ai_enhance == "yes":
+        custom_clause = enhance_sentence_with_gpt(custom_clause)
+        sentiment_feedback = analyze_sentiment_with_azure(custom_clause)
+
+    # Split the custom clause into individual terms
+    custom_clause_list = [
+        clause.strip() for clause in custom_clause.split(".") if clause
+    ]
+
+    # Format the terms in a point-wise manner
+    custom_clause_formatted = "\n".join("- " + clause for clause in custom_clause_list)
+
+    # Construct the full contract
+    full_contract = f"{contract}\n\nTerms and Conditions:\n{custom_clause_formatted}"
 
     # Extract key phrases
     key_phrases = extract_key_phrases(contract)
@@ -205,15 +214,19 @@ def finalize_contract():
     # Generate recommendations
     recommendations = generate_recommendations(contract_type, key_phrases)
 
-    
-    return render_template("output_template.html", content=contract_display, recommendations=recommendations)
-
+    return render_template(
+        "output_template.html",
+        contract=full_contract,  # Use the full contract here
+        recommendations=recommendations,
+        custom_clause=custom_clause,
+        sentiment_feedback=sentiment_feedback,
+    )
 
 
 @app.route("/send_to_dropbox", methods=["POST"])
 def send_to_dropbox():
-    contract_content = request.form["contract_content"]
-    message = send_to_dropbox_sign(contract_content, api_key)
+    full_contract = request.form["full_contract"]
+    message = send_to_dropbox_sign(full_contract, api_key)
     return render_template("success_notification.html", message=message)
 
 
