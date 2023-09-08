@@ -3,7 +3,6 @@ import base64
 import requests
 from datetime import date
 
-import flask
 from flask import render_template, request, redirect, url_for, flash
 from dropbox import app
 
