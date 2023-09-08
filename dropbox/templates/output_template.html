@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Generated Contract</title>
+    <link rel="icon" href="{{ url_for('static', filename='logo.png') }}" type="image/x-icon">
     <link
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
       rel="stylesheet"
@@ -81,16 +82,13 @@
           <strong>Feedback:</strong> {{ sentiment_feedback }}
         </div>
         <form action="/send_to_dropbox" method="post" class="submit-form">
-          <input
-            type="hidden"
-            name="full_contract"
-            value="{{ contract }}"
-          />
-          <input
-            type="submit"
-            value="Send to Dropbox Sign"
-            class="btn btn-primary"
-          />
+          <div class="form-group">
+            <label for="email"><b>Email Address for Signing:</b></label>
+            <input type="email" class="form-control" id="email" name="signing_email" required
+              placeholder="Enter email address" />
+          </div>
+          <input type="hidden" name="full_contract" value="{{ contract }}" />
+          <input type="submit" value="Send to Sign" class="btn btn-primary" />
         </form>
 
         <!-- AI Recommendations Section -->
