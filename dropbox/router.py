@@ -78,7 +78,7 @@ def authenticate_client():
 client = authenticate_client()
 
 
-def send_to_dropbox_sign(contract_content, api_key):
+def send_to_dropbox_sign(contract_content, api_key, email_address):
     url = "https://api.hellosign.com/v3/signature_request/send"
     headers = {
         "Authorization": f"Basic {base64.b64encode(f'{api_key}:'.encode()).decode()}"
@@ -91,7 +91,7 @@ def send_to_dropbox_sign(contract_content, api_key):
         "subject": "Please sign this contract",
         "message": "This is a test contract. Please sign it.",
         "signers[0][name]": "Vishesh Tripathi",
-        "signers[0][email_address]": "vishesht27@gmail.com",
+        "signers[0][email_address]": email_address,
     }
 
     # Attach the file
@@ -157,7 +157,7 @@ def finalize_contract():
         rent_amount = request.form.get("rent_amount", "")
         duration = request.form.get("duration", "")
 
-        with open("contract_templates/rental.txt", "r") as file:
+        with open("dropbox/contract_templates/rental.txt", "r") as file:
             contract = file.read()
             contract = contract.replace("[LANDLORD_NAME]", landlord_name)
             contract = contract.replace("[TENANT_NAME]", tenant_name)
@@ -170,7 +170,7 @@ def finalize_contract():
         party_two = request.form.get("receiving_party", "")
         duration = request.form.get("duration", "")
 
-        with open("contract_templates/nda.txt", "r") as file:
+        with open("dropbox/contract_templates/nda.txt", "r") as file:
             contract = file.read()
             contract = contract.replace("[PARTY_ONE_NAME]", party_one)
             contract = contract.replace("[PARTY_TWO_NAME]", party_two)
@@ -183,7 +183,7 @@ def finalize_contract():
         salary = request.form.get("salary", "")
         duration = request.form.get("duration", "")
 
-        with open("contract_templates/employment.txt", "r") as file:
+        with open("dropbox/contract_templates/employment.txt", "r") as file:
             contract = file.read()
             contract = contract.replace("[EMPLOYER_NAME]", employer_name)
             contract = contract.replace("[EMPLOYEE_NAME]", employee_name)
@@ -226,9 +226,8 @@ def finalize_contract():
 @app.route("/send_to_dropbox", methods=["POST"])
 def send_to_dropbox():
     full_contract = request.form["full_contract"]
-    message = send_to_dropbox_sign(full_contract, api_key)
+    message = send_to_dropbox_sign(full_contract, api_key, request.form['signing_email'])
     return render_template("success_notification.html", message=message)
-
 
 if __name__ == "__main__":
     app.run(debug=True)

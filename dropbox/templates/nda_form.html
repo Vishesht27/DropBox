@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="icon" href="{{ url_for('static', filename='logo.png') }}" type="image/x-icon">
     <link
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
       rel="stylesheet"
@@ -151,12 +152,13 @@
 
               <div class="form-group">
                 <label for="custom_clause"
-                  >Add a custom clause (optional):</label
+                  >Add a custom clause:</label
                 >
                 <textarea
                   name="custom_clause"
                   rows="4"
                   class="form-control"
+                  required
                 ></textarea>
               </div>
 
