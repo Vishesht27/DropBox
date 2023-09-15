@@ -35,7 +35,7 @@ ContractMatic streamlines contract generation with the help of artificial intell
 
 **Robust Backend Development:** Leveraging our strengths, we developed a robust backend using Flask. This ensures that the platform is scalable, reliable, and can handle a variety of user requests efficiently.
 
-**User-Centric Design:** Even with our challenges in the frontend, we prioritized user experience. We made sure the platform is intuitive, straightforward, and caters to both individuals with limited legal knowledge and professionals looking for a quick contract solution.
+**User-Centric Design:** Even with our challenges in the front end, we prioritized user experience. We made sure the platform is intuitive, straightforward, and caters to both individuals with limited legal knowledge and professionals looking for a quick contract solution.
 
 
 ## Tech Stack Used
@@ -61,7 +61,7 @@ pip install requirements.txt
 ```
 ### 3. Add the .env file
 ```bash
-mkdir .env
+echo some_contents_of_file > .env
 ```
 ### Add the API Keys
 1. [Dropbox API_Key](https://faq.hellosign.com/hc/en-us/articles/205724858-Testing-the-Dropbox-Sign-API-before-purchasing-a-subscription)
